@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [newName, setNewName] = useState("");
+  const changeName = (e) => {
+    setNewName(e.target.value);
+  };
+  const personnames = persons.map((person) => person.name);
+
+  const addChange = (event) => {
+    event.preventDefault();
+    if (personnames.includes(newName)) {
+      alert(`${newName} is already in the list`);
+    } else {
+      const newperson = { name: newName };
+      setPersons(persons.concat(newperson));
+      setNewName("");
+    }
+  };
+  console.log("the array", persons);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={addChange}>
+        <div>
+          name: <input value={newName} onChange={changeName} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      {persons.map((person) => (
+        <p key={person.name.toLowerCase()}>{person.name}</p>
+      ))}
     </div>
   );
-}
+};
 
 export default App;
